@@ -1,0 +1,20 @@
+()=>
+let
+    body = 
+    "grant_type=client_credentials&
+    resource=https://analysis.windows.net/powerbi/api&
+    client_id="&client_id&"&
+    client_secret="&client_secret,
+Data=
+    Json.Document(
+        Web.Contents(
+            "https://login.microsoftonline.com/"&tenant_id&"/oauth2/token", 
+            [Headers=
+                [#"Content-Type"="application/x-www-form-urlencoded"], 
+            Content=Text.ToBinary(body)]
+            )
+            ),
+access_token = Data[token_type] & " " & Data[access_token]
+    
+in
+    access_token
