@@ -1,0 +1,18 @@
+= (TablaaExtraer as table)=>
+
+let
+  
+  OrigenF = TablaaExtraer,
+    #"Conservar filas superiores" = Table.Transpose(Table.FirstN(OrigenF,1)),
+    Nombres= Table.ColumnNames(OrigenF),
+    Column1 = #"Conservar filas superiores"[Column1],
+    Personalizado1 = List.Transform(Column1,each Table.Schema(#table(type table [x= Value.Type(_)],{}))[Kind]{0}),
+    Personalizado2 = Table.FromColumns({Nombres,Personalizado1}),
+    #"Filas filtradas" = Table.SelectRows(Personalizado2, each ([Column2] = "list")),
+    Column2 = #"Filas filtradas"[Column1],
+    ColumnasLista = Table.SelectColumns(OrigenF , Column2),
+    Personalizado4 = OrigenF,
+    Personalizado3 = List.Accumulate(Table.ColumnNames(ColumnasLista),Personalizado4, (state, column)=> Table.ExpandListColumn(state,column))  //Estamos llamando en la tabla para seleccionar columnas el paso en el que la tabla estaba completa
+
+in
+    Personalizado3
