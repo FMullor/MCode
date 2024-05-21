@@ -1,0 +1,17 @@
+//Esta funcion nos va a permitir comparar los nombres de las columnas de dos tablas para poder ver a priori si vamos a poder anexarlas sin problema
+
+
+(Tabla1 as table, Tabla2 as table) =>
+
+
+let
+    Origen = Table.ColumnNames(Tabla1),
+    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    TablaA = Table.TransformColumnTypes(#"Convertida en tabla",{{"Column1", type text}}),
+    Personalizado1 = Table.ColumnNames(Tabla2),
+    #"Convertida en tabla1" = Table.FromList(Personalizado1, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    #"Tipo cambiado" = Table.TransformColumnTypes(#"Convertida en tabla1",{{"Column1", type text}}),
+    #"Consultas combinadas" = Table.NestedJoin(#"Tipo cambiado", {"Column1"}, TablaA, {"Column1"}, "Columnas con nombre cambiado1", JoinKind.FullOuter),
+    #"Se expandió Columnas con nombre cambiado1" = Table.ExpandTableColumn(#"Consultas combinadas", "Columnas con nombre cambiado1", {"Column1"}, {"Column1.1"})
+in
+    #"Se expandió Columnas con nombre cambiado1"
