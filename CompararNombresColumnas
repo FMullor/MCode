@@ -12,6 +12,7 @@ let
     #"Convertida en tabla1" = Table.FromList(Personalizado1, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
     #"Tipo cambiado" = Table.TransformColumnTypes(#"Convertida en tabla1",{{"Column1", type text}}),
     #"Consultas combinadas" = Table.NestedJoin(#"Tipo cambiado", {"Column1"}, TablaA, {"Column1"}, "Columnas con nombre cambiado1", JoinKind.FullOuter),
-    #"Se expandió Columnas con nombre cambiado1" = Table.ExpandTableColumn(#"Consultas combinadas", "Columnas con nombre cambiado1", {"Column1"}, {"Column1.1"})
+    #"Se expandió Columnas con nombre cambiado1" = Table.ExpandTableColumn(#"Consultas combinadas", "Columnas con nombre cambiado1", {"Column1"}, {"Column1.1"}),
+CambioNombres= Table.RenameColumns(#"Se expandió Columnas con nombre cambiado1",{{"Column1", "Tabla1"}, {"Column1.1", "Tabla2"}})
 in
-    #"Se expandió Columnas con nombre cambiado1"
+    CambioNombres
