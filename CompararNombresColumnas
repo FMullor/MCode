@@ -13,6 +13,6 @@ let
     #"Tipo cambiado" = Table.TransformColumnTypes(#"Convertida en tabla1",{{"Column1", type text}}),
     #"Consultas combinadas" = Table.NestedJoin(#"Tipo cambiado", {"Column1"}, TablaA, {"Column1"}, "Columnas con nombre cambiado1", JoinKind.FullOuter),
     #"Se expandió Columnas con nombre cambiado1" = Table.ExpandTableColumn(#"Consultas combinadas", "Columnas con nombre cambiado1", {"Column1"}, {"Column1.1"}),
-CambioNombres= Table.RenameColumns(#"Se expandió Columnas con nombre cambiado1",{{"Column1", "Tabla1"}, {"Column1.1", "Tabla2"}})
+    CambioNombres= Table.RenameColumns(#"Se expandió Columnas con nombre cambiado1",{{"Column1", "Tabla1"}, {"Column1.1", "Tabla2"}})
 in
     CambioNombres
