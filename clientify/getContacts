@@ -1,0 +1,30 @@
+//Obtener lista de contactos desde la API de Clientify. Esta API devuelve un mázimo de 250 registros por lo que en el código generamos una función de paginación
+//Autor: Francisco Mullor
+
+
+let
+
+fxContactosCientify=
+
+(page  as number)=>
+
+let
+  Origen = 
+  Json.Document(Web.Contents("https://api.clientify.net/v1/",
+[RelativePath="contacts/?page_size=250&page="&Number.ToText(page),  
+Headers=[Authorization="Token "& TokenClientify()]])),
+    results = Origen[results],
+    #"Convertida en tabla" = Table.FromList(results, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    #"Se expandió Column1" = Table.ExpandRecordColumn(#"Convertida en tabla", "Column1", {"id", "name", "description", "created", "price", "currency", "currency_format", "owner", "sku", "modified", "categories", "sub_categories", "product_picture_url", "term_length", "source", "payment", "payment_period", "custom_fields", "all_categories", "all_subcategories", "logo", "picture_url", "owner_name", "product_url_external", "product_url", "tax"}, {"id", "name", "description", "created", "price", "currency", "currency_format", "owner", "sku", "modified", "categories", "sub_categories", "product_picture_url", "term_length", "source", "payment", "payment_period", "custom_fields", "all_categories", "all_subcategories", "logo", "picture_url", "owner_name", "product_url_external", "product_url", "tax"})
+in
+  #"Se expandió Column1" ,
+
+    Origen = List.Generate(()=>
+[Result= try fxContactosCientify(1) otherwise null, Page=1],
+each [Result]<>null,
+each [Result= try ContactosCientify([Page]+1) otherwise null, Page=[Page]+1],
+each [Result]),
+    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    #"Se expandió Column1" = Table.ExpandTableColumn(#"Convertida en tabla", "Column1", {"id", "name", "description", "created", "price", "currency", "currency_format", "owner", "sku", "modified", "categories", "sub_categories", "product_picture_url", "term_length", "source", "payment", "payment_period", "custom_fields", "all_categories", "all_subcategories", "logo", "picture_url", "owner_name", "product_url_external", "product_url", "tax"}, {"Column1.id", "Column1.name", "Column1.description", "Column1.created", "Column1.price", "Column1.currency", "Column1.currency_format", "Column1.owner", "Column1.sku", "Column1.modified", "Column1.categories", "Column1.sub_categories", "Column1.product_picture_url", "Column1.term_length", "Column1.source", "Column1.payment", "Column1.payment_period", "Column1.custom_fields", "Column1.all_categories", "Column1.all_subcategories", "Column1.logo", "Column1.picture_url", "Column1.owner_name", "Column1.product_url_external", "Column1.product_url", "Column1.tax"})
+in
+    #"Se expandió Column1"
