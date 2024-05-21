@@ -1,0 +1,29 @@
+// Obtener token de autentificacion API Clientify
+//Autor: Francisco Mullor
+
+()=>
+
+let
+
+  Origen = Json.Document(
+    Web.Contents("https://api.clientify.net/v1/",
+    [RelativePath ="api-auth/obtain_token/", 
+     Headers=[
+     #"Content-Type"="application/json"
+       ],
+       Content =  Login])),  //Login**** ver notas 
+    token = Origen[token]
+in
+    token
+
+
+
+//*** Nota. "Login" en este caso es un archivo .json que debe estar estructurado de la siguiente forma:
+
+{
+    "username": "xxxxxxx@xxxxxxx.com",
+    "password": "xxxxxxxxxxxxx"
+}
+
+
+                                            
