@@ -44,7 +44,7 @@ let
                 Tabla con los resultados de la consulta ejecutada sobre Base de datos SQL.
 
                 <p><b>  barra de fórmulas (fx) ejemplo:  </b></br>
-                <code>  ConsultaNativa.Folding(Origen, "select * from tb.tabla")  </code>
+                <code>  ConsultaNativa.Folding(Origen, ""select * from tb.tabla"")  </code>
                 
             "
           ],
