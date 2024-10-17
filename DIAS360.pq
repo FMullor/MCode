@@ -1,4 +1,4 @@
-
+Inicio
 
 let
     
@@ -45,7 +45,7 @@ let
                 Diferencia en días entre dos fechas basada en calendario 360.
 
                 <p><b>  barra de fórmulas (fx) ejemplo:  </b></br>
-                <code>  DIAS360( Tabla1, Tabla2 )  </code>
+                <code>  DIAS360( FechaInicio, FechaFin )  </code>
                 
             "
           ],
