@@ -1,5 +1,3 @@
-Inicio
-
 let
     
     metaDocumentation = type function (
